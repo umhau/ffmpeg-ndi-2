@@ -1,16 +1,10 @@
 #!/bin/sh
+set -v                 # display what's happening as it happens
 
 # This script will prepare - compile and install an 8-channel Decklink-NDI encoder
 
 # Environment:
 InstallDir=$PWD
-
-# Check if Username is correct (NDI in capital letters)
-if [ "$(whoami)" != "ndi" ]; then
-        echo "Script must be run as user: ndi"
-        exit -1
-fi
-
 
 # Update Ubuntu:
 echo "Updating Ubuntu"
@@ -59,21 +53,6 @@ echo "Move and activate NDI configfile"
 sudo mv $InstallDir/NDI-SDK/NDI.conf /etc/ld.so.conf.d/NDI.conf
 sudo ldconfig
 
-# Install haivision/srt:
-cd ~
-sudo apt-get install tclsh pkg-config cmake libssl-dev build-essential
-git clone https://github.com/Haivision/srt.git
-cd srt
-./configure
-make
-sudo make install
-
-#Decklink SDK:
-echo "Move Decklink SDK"
-
-mkdir $HOME/DecklinkSDK
-mv $InstallDir/DecklinkSDK/Linux $HOME/DecklinkSDK
-
 #Get FFmpeg:
 echo "Get FFmpeg"
 
@@ -95,24 +74,12 @@ cd $HOME/ffmpeg
 make
 sudo make install
 
-#Move Startupscripts to folder:
-echo "Move startupscripts"
+# put the libraries where they go
+sudo install ~/ffmpeg_sources/ndi/lib/* /usr/lib/
 
-mkdir $HOME/runffmpeg
-mv $InstallDir/StartUpScripts/encode8HDSDI.sh $HOME/runffmpeg/encode8HDSDI.sh
-mv $InstallDir/StartUpScripts/HDSDItoNDI.sh $HOME/runffmpeg/HDSDItoNDI.sh
-
-#Load Encoderscript at startup:
-echo "Set Encoderscript at startup"
-
-chmod +x $HOME/runffmpeg/HDSDItoNDI.sh
-chmod +x $HOME/runffmpeg/encode8HDSDI.sh
-mkdir ~/.config/autostart
-mv $InstallDir/StartUpScripts/encode8HDSDI.sh.desktop ~/.config/autostart/encode8HDSDI.sh.desktop
+sudo install ~/bin/ffmpeg /usr/bin/ffmpeg_ndi
 
 #Finished:
 echo "-------------------------------------------------------------"
 echo
-echo "Install Decklink GUI - desktopvideo"
-echo "Manually set Decklink card for 8 inputs in Desktopvideo"
-echo "And Reboot"
+echo "Reboot"

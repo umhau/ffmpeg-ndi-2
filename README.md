@@ -1,4 +1,6 @@
-# compile FFMPEG with NDI -----------------------------------------------------
+# compile FFMPEG with NDI
+
+## install
 
 Install Ubuntu 18.04 Desktop.  (Maybe: enable autologin and screen blanking)
 
@@ -10,7 +12,7 @@ bash install.ffmpeg.sh
 reboot
 ```
 
-## FFmpeg examples ------------------------------------------------------------
+## FFmpeg examples
 
 Direct RTSP URL:
 

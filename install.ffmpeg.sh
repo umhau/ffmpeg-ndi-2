@@ -7,6 +7,7 @@ set -v                 # display what's happening as it happens
 InstallDir=$PWD
 
 cores="$1"
+echo "using make with $cores cores"
 
 # Update Ubuntu:
 echo "Updating Ubuntu"

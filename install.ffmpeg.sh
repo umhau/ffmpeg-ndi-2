@@ -1,5 +1,5 @@
 #!/bin/sh
-set -v                 # display what's happening as it happens
+set -ve                 # display what's happening as it happens and exit on error
 
 # This script will prepare - compile and install ffmpeg with NDI.
 
@@ -8,6 +8,8 @@ InstallDir=$PWD
 
 cores="$1"
 echo "using make with $cores cores"
+
+[ "`whoami`" != "root" ] && echo "must run as root. exiting." && exit
 
 # Update Ubuntu:
 echo "Updating Ubuntu"

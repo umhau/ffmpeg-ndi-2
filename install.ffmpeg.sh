@@ -6,6 +6,8 @@ set -v                 # display what's happening as it happens
 # Environment:
 InstallDir=$PWD
 
+cores="$1"
+
 # Update Ubuntu:
 echo "Updating Ubuntu"
 
@@ -74,7 +76,12 @@ PKG_CONFIG_PATH=$HOME/ffmpeg_build/lib/pkgconfig
 cd $HOME/ffmpeg
 ./configure  --prefix=$HOME/ffmpeg_build  --pkg-config-flags=--static  --extra-cflags=-I$HOME/ffmpeg_sources/ndi/include  --extra-ldflags=-L$HOME/ffmpeg_sources/ndi/lib  --bindir=$HOME/bin --enable-ffplay --enable-gpl  --enable-libass  --enable-libfdk-aac  --enable-libfreetype  --enable-libmp3lame  --enable-libopencore-amrnb   --enable-libopencore-amrwb  --disable-librtmp   --enable-libopus   --enable-libtheora   --enable-libvorbis   --enable-libvpx   --enable-libx264 --enable-nonfree   --enable-version3 --enable-libndi_newtek 
 
-make
+if   [ -z $cores ]; then 
+  make
+else 
+  make -j $cores
+fi
+
 sudo make install
 
 # put the libraries where they go

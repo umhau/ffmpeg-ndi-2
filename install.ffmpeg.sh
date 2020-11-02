@@ -45,7 +45,7 @@ echo "NDI SDK"
 
 cd $InstallDir/NDI-SDK
 sudo chmod +x InstallNDISDK_v3_Linux.sh
-sudo ./InstallNDISDK_v3_Linux.sh
+yes "y" | sudo ./InstallNDISDK_v3_Linux.sh # don't wait for interaction halfway through
 
 # Move files from NDI SDK:
 mkdir ~/ffmpeg_sources
